@@ -1,0 +1,44 @@
+name: Create Tag
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - Dockerfile
+  workflow_dispatch: {}
+
+jobs:
+  tag-latest:
+    runs-on: forgejo
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Get tag version from Dockerfile
+        id: get_tag
+        run: |
+          NSS_VERSION="$(grep -E '^ARG NSS_VERSION=' Dockerfile | cut -d= -f2)"
+          TAG="$(printf '%s\n' "$NSS_VERSION" | sed -E 's/^NSS_([0-9]+)_([0-9]+)(_([0-9]+))?_RTM$/\1.\2.\4/' | sed 's/\.$/.0/')"
+          echo "Tag version found: $TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Check if tag already exists remotely
+        id: tag_exists
+        run: |
+          if git ls-remote --tags origin | grep -q "refs/tags/${{ steps.get_tag.outputs.tag }}$"; then
+            echo "Tag already exists."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Tag does not exist."
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create and push lightweight tag on current commit
+        if: steps.tag_exists.outputs.exists == 'false'
+        run: |
+          git config user.name "Luzifer-CI"
+          git config user.email "ci@luzifer.io"
+          git tag "${{ steps.get_tag.outputs.tag }}" "${{ github.sha }}"
+          git push origin "${{ steps.get_tag.outputs.tag }}"
