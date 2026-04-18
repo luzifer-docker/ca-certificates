@@ -2,7 +2,7 @@
 
 This repository builds a minimal container image containing the Mozilla-managed CA certificate bundle for use in `scratch`-based images.
 
-The published image is available as `ghcr.io/luzifer-docker/ca-certificates` and is designed to be copied into another image instead of being run directly.
+The published image is available as `ghcr.io/luzifer-docker/ca-certificates` and can either be used directly as a base image or copied into another image as part of a multi-stage build.
 
 ## Purpose
 
@@ -26,9 +26,17 @@ Changes to `Dockerfile` on `develop` trigger tag creation based on `NSS_VERSION`
 
 ## Usage
 
+Use the image directly as your base when you only need the published certificate bundle:
+
+```Dockerfile
+FROM ghcr.io/luzifer-docker/ca-certificates:3.123.0
+```
+
+If you want to fold the certificates into another final image, copying from it in a multi-stage build remains a valid option:
+
 ```Dockerfile
 FROM scratch
 COPY --from=ghcr.io/luzifer-docker/ca-certificates:3.123.0 / /
 ```
 
-Replace the tag with the release you want to consume in your image.
+Both approaches result in the same certificate files being present in the image. Replace the tag with the release you want to consume.
