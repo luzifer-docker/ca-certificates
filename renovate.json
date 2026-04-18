@@ -13,5 +13,16 @@
         "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: versioning=(?<versioning>\\S+))?\\s+ARG \\w+_VERSION=(?<currentValue>\\S+)"
       ]
     }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "stagex/*"
+      ],
+      "pinDigests": false
+    }
   ]
 }
