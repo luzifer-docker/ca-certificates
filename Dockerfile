@@ -11,7 +11,7 @@ COPY --from=stagex/core-zlib            . /
 # renovate: datasource=github-tags depName=curl/curl versioning=regex:^curl-(?<major>\d+)_(?<minor>\d+)_(?<patch>\d+)$
 ARG CURL_VERSION=curl-8_21_0
 # renovate: datasource=github-tags depName=nss-dev/nss versioning=regex:^NSS_(?<major>\d+)_(?<minor>\d+)(?:_(?<patch>\d+))?_RTM$
-ARG NSS_VERSION=NSS_3_127_RTM
+ARG NSS_VERSION=NSS_3_128_RTM
 
 WORKDIR /src
 
