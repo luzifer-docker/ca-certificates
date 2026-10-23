@@ -18,9 +18,14 @@ The published image contains:
 
 ## Build
 
-The bundle is generated from Mozilla NSS `certdata.txt` using curl's `mk-ca-bundle.pl` script.
+The bundle is generated from Mozilla NSS `certdata.txt` using the Go builder in
+[`builder`](builder/). The builder extracts the roots trusted for TLS server
+authentication and writes them as a deterministic PEM bundle.
 
-The build assembles the required tooling in an intermediate stage, generates the certificate bundle, installs the resulting files into a root filesystem, and publishes a final `FROM scratch` image containing only those prepared files.
+The container build downloads the selected NSS `certdata.txt`, compiles the
+builder, and generates the bundle in a network-isolated build step. It then
+installs the resulting files into a root filesystem and publishes a final
+`FROM scratch` image containing only those prepared files.
 
 Changes to `Dockerfile` on `develop` trigger tag creation based on `NSS_VERSION`. CI then builds and publishes the image to GitHub Container Registry. Dependency updates for the build inputs are managed with Renovate.
 
