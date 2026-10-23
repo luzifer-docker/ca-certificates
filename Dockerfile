@@ -29,7 +29,7 @@ RUN <<-EOF
 EOF
 
 RUN --network=none <<-EOF
-	set -eux
+  set -eux
 
   ./builder/builder \
     --input certdata.txt \
@@ -39,10 +39,10 @@ RUN --network=none <<-EOF
   install -Dm644 -t /rootfs/etc/ssl/certs ca-certificates.crt
   ln -s certs/ca-certificates.crt /rootfs/etc/ssl/cert.pem
 
-	# OpenSSL 1.1 compat
-	mkdir -p /rootfs/etc/ssl1.1
-	ln -s ../ssl/certs /rootfs/etc/ssl1.1/
-	ln -s ../ssl/cert.pem /rootfs/etc/ssl1.1/
+  # OpenSSL 1.1 compat
+  mkdir -p /rootfs/etc/ssl1.1
+  ln -s ../ssl/certs /rootfs/etc/ssl1.1/
+  ln -s ../ssl/cert.pem /rootfs/etc/ssl1.1/
 EOF
 
 
