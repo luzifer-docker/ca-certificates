@@ -1,6 +1,6 @@
 FROM golang:1.27.3-alpine AS build
 
-# renovate: datasource=github-tags depName=nss-dev/nss versioning=regex:^NSS_(?<major>\d+)_(?<minor>\d+)(?:_(?<patch>\d+))?_RTM$
+# renovate: datasource=github-tags depName=mozilla/nss versioning=regex:^NSS_(?<major>\d+)_(?<minor>\d+)(?:_(?<patch>\d+))?_RTM$
 ARG NSS_VERSION=NSS_3_131_1_RTM
 
 COPY ./builder/ /src/builder/
@@ -14,7 +14,7 @@ RUN <<-EOF
     curl
 
   curl -sSfLo certdata.txt \
-    "https://raw.githubusercontent.com/nss-dev/nss/refs/tags/${NSS_VERSION}/lib/ckfw/builtins/certdata.txt"
+    "https://raw.githubusercontent.com/mozilla/nss/refs/tags/${NSS_VERSION}/lib/ckfw/builtins/certdata.txt"
 
   cd builder
 
