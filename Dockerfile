@@ -1,7 +1,7 @@
 FROM golang:1.27.3-alpine@sha256:d200d2dd76b03a99b52651fd1325aff7dcd35422c35c01bac56571b0507f3deb AS build
 
 # renovate: datasource=github-tags depName=mozilla/nss versioning=regex:^NSS_(?<major>\d+)_(?<minor>\d+)(?:_(?<patch>\d+))?_RTM$
-ARG NSS_VERSION=NSS_3_132_RTM
+ARG NSS_VERSION=NSS_3_133_RTM
 
 COPY ./builder/ /src/builder/
 WORKDIR /src
